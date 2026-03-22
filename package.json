@@ -12,7 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "lucide-react": "^0.577.0",
-    "psiu-meet-client": "^1.1.4",
+    "psiu-meet-client": "^1.1.5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-draggable": "^4.5.0"
