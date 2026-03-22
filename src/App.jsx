@@ -130,11 +130,12 @@ function ModalEncerramento({ onFim }) {
 }
 
 // ============================================================================
-// LOBBY (O Painel Premium)
+// LOBBY (Agora com Scroll Perfeito no Mobile!)
 // ============================================================================
 function LobbyDeAcesso({ onConectar, salaAtivaId }) {
   const [copiado, setCopiado] = useState(false);
 
+  // Estados pré-preenchidos do Professor
   const [profNome, setProfNome]       = useState('Daniel');
   const [profId, setProfId]           = useState('usr_daniel_001');
   const [profAvatar, setProfAvatar]   = useState('https://ui-avatars.com/api/?name=Daniel&background=0D8ABC&color=fff');
@@ -142,6 +143,7 @@ function LobbyDeAcesso({ onConectar, salaAtivaId }) {
   const [profMaxPart, setProfMaxPart] = useState('2');
   const [profChave, setProfChave]     = useState('');
   
+  // Estados pré-preenchidos do Aluno
   const [alunoNome, setAlunoNome]     = useState('Gabriel');
   const [alunoId, setAlunoId]         = useState('usr_gabriel_002');
   const [alunoAvatar, setAlunoAvatar] = useState('https://ui-avatars.com/api/?name=Gabriel&background=10B981&color=fff');
@@ -157,7 +159,7 @@ function LobbyDeAcesso({ onConectar, salaAtivaId }) {
   };
 
   const handleEntrarProfessor = () => {
-    onConectar({
+    const payload = {
       papel: 'professor',
       nome: profNome,
       id: profId,
@@ -165,29 +167,33 @@ function LobbyDeAcesso({ onConectar, salaAtivaId }) {
       tempo: Number(profTempo),
       maxParticipants: Number(profMaxPart),
       avatar: profAvatar,
-    });
+    };
+    onConectar(payload);
   };
 
   const handleEntrarAluno = () => {
     if (!alunoChave.trim()) return alert("O aluno precisa da chave da sala!");
-    onConectar({
+    const payload = {
       papel: 'aluno',
       nome: alunoNome,
       id: alunoId,
       chave: alunoChave.trim(),
       avatar: alunoAvatar,
-    });
+    };
+    onConectar(payload);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-slate-950 text-slate-200 p-4 md:p-6 overflow-x-hidden overflow-y-auto">
-      <div className="text-center mb-6 md:mb-10 mt-4">
+    // 👇 OLHA A MÁGICA AQUI: h-full, py-10 e md:justify-center
+    <div className="flex flex-col items-center md:justify-center w-full h-full bg-slate-950 text-slate-200 p-4 py-10 md:p-6 overflow-x-hidden overflow-y-auto pb-24">
+      
+      <div className="text-center mb-6 md:mb-10">
         <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-2">PsiuMeet<span className="text-blue-500">.</span></h1>
         <p className="text-slate-400 text-sm md:text-base">Acesso rápido com Payload Customizado</p>
       </div>
 
       {salaAtivaId && (
-        <div className="mb-6 md:mb-8 flex items-center justify-between gap-3 bg-blue-900/30 border border-blue-500 rounded-xl p-2 pl-4 w-full max-w-md shadow-[0_0_15px_rgba(59,130,246,0.15)]">
+        <div className="mb-6 md:mb-8 flex items-center justify-between gap-3 bg-blue-900/30 border border-blue-500 rounded-xl p-2 pl-4 w-full max-w-md shadow-[0_0_15px_rgba(59,130,246,0.15)] shrink-0">
           <span className="text-blue-300 font-mono text-xs md:text-sm truncate flex-1">
             <strong>Sala ativa:</strong> {salaAtivaId}
           </span>
@@ -197,12 +203,15 @@ function LobbyDeAcesso({ onConectar, salaAtivaId }) {
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row gap-6 md:gap-8 w-full max-w-5xl pb-10">
-        <div className="flex-1 bg-slate-900 border border-blue-500/20 p-5 md:p-8 rounded-3xl shadow-xl flex flex-col relative">
+      <div className="flex flex-col lg:flex-row gap-6 md:gap-8 w-full max-w-5xl pb-10 shrink-0">
+        
+        {/* Painel do Professor */}
+        <div className="flex-1 bg-slate-900 border border-blue-500/20 p-5 md:p-8 rounded-3xl shadow-xl flex flex-col relative shrink-0">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-blue-500/20 rounded-xl"><GraduationCap className="text-blue-400 w-6 h-6" /></div>
             <div><h2 className="text-lg md:text-xl font-bold text-white">Criar (Professor)</h2></div>
           </div>
+
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-x-4">
             <InputField label="Nome" icon={User} value={profNome} onChange={setProfNome} />
             <InputField label="ID do Usuário" icon={Hash} value={profId} onChange={setProfId} />
@@ -213,14 +222,19 @@ function LobbyDeAcesso({ onConectar, salaAtivaId }) {
               <InputField label="Forçar Chave Fixa (Opcional)" icon={KeyRound} value={profChave} onChange={setProfChave} placeholder="Deixe em branco p/ gerar auto" />
             </div>
           </div>
-          <button onClick={handleEntrarProfessor} className="mt-4 w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm md:text-base rounded-xl transition-all shadow-lg active:scale-[0.98]">Injetar e Abrir Sala</button>
+
+          <button onClick={handleEntrarProfessor} className="mt-4 w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm md:text-base rounded-xl transition-all shadow-lg active:scale-[0.98]">
+            Injetar e Abrir Sala
+          </button>
         </div>
 
-        <div className="flex-1 bg-slate-900 border border-emerald-500/20 p-5 md:p-8 rounded-3xl shadow-xl flex flex-col relative">
+        {/* Painel do Aluno */}
+        <div className="flex-1 bg-slate-900 border border-emerald-500/20 p-5 md:p-8 rounded-3xl shadow-xl flex flex-col relative shrink-0">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-emerald-500/20 rounded-xl"><User className="text-emerald-400 w-6 h-6" /></div>
             <div><h2 className="text-lg md:text-xl font-bold text-white">Entrar (Aluno)</h2></div>
           </div>
+
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-x-4 h-full content-start">
             <InputField label="Nome" icon={User} value={alunoNome} onChange={setAlunoNome} />
             <InputField label="ID do Usuário" icon={Hash} value={alunoId} onChange={setAlunoId} />
@@ -231,13 +245,16 @@ function LobbyDeAcesso({ onConectar, salaAtivaId }) {
               </div>
             </div>
           </div>
-          <button onClick={handleEntrarAluno} className="mt-4 w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm md:text-base rounded-xl transition-all shadow-lg active:scale-[0.98]">Conectar na Sala</button>
+
+          <button onClick={handleEntrarAluno} className="mt-4 w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm md:text-base rounded-xl transition-all shadow-lg active:scale-[0.98]">
+            Conectar na Sala
+          </button>
         </div>
+
       </div>
     </div>
   );
 }
-
 // ============================================================================
 // SALA DE VÍDEO
 // ============================================================================
