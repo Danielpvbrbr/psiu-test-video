@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { Mic, MicOff, Video as VideoIcon, VideoOff, PhoneOff, GripVertical, User, GraduationCap, AlertTriangle, Loader2 } from 'lucide-react';
 
-const SERVER_URL  = 'http://20.66.88.228:4000';
+const SERVER_URL  = 'https://psiumeet.azurewebsites.net';
 const SESSION_KEY = 'psiu_session';
 
 const readSession = () => { try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || {}; } catch { return {}; } };
