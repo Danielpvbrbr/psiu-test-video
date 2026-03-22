@@ -1,7 +1,7 @@
 {
   "name": "psiu-test-video",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "lucide-react": "^0.577.0",
-    "psiu-meet-client": "^1.1.0",
+    "psiu-meet-client": "^1.1.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-draggable": "^4.5.0"
