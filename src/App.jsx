@@ -313,10 +313,10 @@ function SalaDeVideo({ payload, onSair, salaId, setSalaId }) {
     isSpeaking, remoteStreams, connectionQuality,
   } = usePsiuFlash();
 
-  const [encerrando,     setEncerrando]     = useState(false);
-  const [isRemoteMuted,  setIsRemoteMuted]  = useState(false);
+  const [encerrando, setEncerrando] = useState(false);
+  const [isRemoteMuted, setIsRemoteMuted] = useState(false);
   const janelaVideoRef = useRef(null);
-  const iniciouRef     = useRef(false);
+  const iniciouRef = useRef(false);
 
   useEffect(() => { onExpired(() => setEncerrando(true)); }, []);
 
@@ -325,19 +325,19 @@ function SalaDeVideo({ payload, onSair, salaId, setSalaId }) {
     iniciouRef.current = true;
     connect({ ...payload, chave: payload.chave || salaId })
       .then(({ roomId }) => { if (roomId) setSalaId(roomId); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const sair = () => { leaveRoom(); onSair(); };
 
   if (status === 'connecting' || status === 'idle') return <TelaConectando payload={payload} onCancelar={sair} />;
-  if (status === 'error')                           return <TelaErroAcesso mensagem={error} onVoltar={sair} />;
+  if (status === 'error') return <TelaErroAcesso mensagem={error} onVoltar={sair} />;
 
   const isProfessor = payload.papel === 'professor';
-  const timerColor  = remainingMs !== null && remainingMs < 300000 ? 'bg-red-500/20 text-red-400' : 'bg-slate-700 text-slate-300';
-  const avisoFim    = remainingMs !== null && remainingMs <= 60000 && remainingMs > 0;
-  const count       = remoteStreams.length;
-  const isOdd       = count % 2 !== 0;
+  const timerColor = remainingMs !== null && remainingMs < 300000 ? 'bg-red-500/20 text-red-400' : 'bg-slate-700 text-slate-300';
+  const avisoFim = remainingMs !== null && remainingMs <= 60000 && remainingMs > 0;
+  const count = remoteStreams.length;
+  const isOdd = count % 2 !== 0;
 
   return (
     <div className="relative w-full h-[100dvh] bg-slate-950 overflow-hidden text-white">
@@ -346,7 +346,7 @@ function SalaDeVideo({ payload, onSair, salaId, setSalaId }) {
 
       {avisoFim && !encerrando && (
         <div className="absolute top-20 md:top-24 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-yellow-500 text-yellow-950 px-4 py-2 rounded-full shadow-lg font-semibold text-xs md:text-sm whitespace-nowrap">
-          ⏳ Encerrando em {formatTime(remainingMs)}
+          Encerrando em {formatTime(remainingMs)}
         </div>
       )}
 
@@ -509,7 +509,12 @@ export default function App() {
         <LobbyDeAcesso onConectar={setPayload} salaAtivaId={salaAtivaId} />
       ) : (
         <PsiuFlashProvider serverUrl={SERVER_URL} vibes>
-          <SalaDeVideo payload={payload} salaId={salaAtivaId} setSalaId={handleSetSalaId} onSair={handleSair} />
+          <SalaDeVideo
+            payload={payload}
+            salaId={salaAtivaId}
+            setSalaId={handleSetSalaId}
+            onSair={handleSair}
+          />
         </PsiuFlashProvider>
       )}
     </div>
